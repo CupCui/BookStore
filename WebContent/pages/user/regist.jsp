@@ -14,7 +14,6 @@
 		var regUser = /^[a-zA-Z_0-9]{6,18}$/;
 		var regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 		var flag = false;
-// 		$("#sub_btn").click(function() {
 		$(".itxt").blur(function() {
 			var $username = $("#username").val();
 			var $password = $("#password").val();
@@ -24,13 +23,10 @@
 			
 			if (!regUser.test($username) || !regUser.test($password) || $password == null) {
 				$("#errorMsg").text("User name or password is not available.");
-				return false;
 			} else if ($password != $repwd) {
 				$("#errorMsg").text("Confirm password is not equal password.");
-				return false;
 			} else if (!regEmail.test($email)) {
 				$("#errorMsg").text("Email is not available.");
-				return false;
 			} else {
 				flag = true;
 				$("#errorMsg").text("All right.");
@@ -74,7 +70,7 @@
 									<label>用户名称：</label>
 									<!-- 用户注册信息错误动态回显用户注册信息 -->
 									<%String username = (String)request.getAttribute("username"); %>
-									<input class="itxt" type="text" placeholder="请输入用户名" autocomplete="off" tabindex="1" name="username" id="username" value="<%=username==null ? "请输入用户名" : username%>"/>
+									<input class="itxt" type="text" placeholder="请输入用户名" autocomplete="off" tabindex="1" name="username" id="username" value="<%=username==null ? "" : username%>"/>
 									<br />
 									<br />
 									<label>用户密码：</label>

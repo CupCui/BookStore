@@ -17,15 +17,23 @@ public class UserServlet extends BaseServlet {
 	protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String verifyCode = request.getParameter("verifyCode");
+
 		User user = userService.login(username, password);
-		if (user != null) {
-			request.getSession().setAttribute("user", user);
-			response.sendRedirect("pages/user/login_success.jsp");
+		String sessionKeyCode = (String)request.getSession().getAttribute("KAPTCHA_SESSION_KEY");
+		
+		if (sessionKeyCode.equals(verifyCode)) {
+			if (user != null) {
+				request.getSession().setAttribute("user", user);
+				response.sendRedirect("pages/user/login_success.jsp");
+			} else {
+				request.setAttribute("username", username);
+				request.setAttribute("password", password);
+				request.setAttribute("user", user);
+				request.getRequestDispatcher("pages/user/login.jsp").forward(request, response);
+			}
 		} else {
-			request.setAttribute("username", username);
-			request.setAttribute("password", password);
-			request.setAttribute("user", user);
-			request.getRequestDispatcher("pages/user/login.jsp").forward(request, response);;
+			request.getRequestDispatcher("pages/user/login.jsp").forward(request, response);
 		}
 	}
 
@@ -45,4 +53,9 @@ public class UserServlet extends BaseServlet {
 		}
 	}
 
+	protected void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getSession().invalidate();
+		
+		request.getRequestDispatcher("pages/user/login.jsp").forward(request, response);
+	}
 }

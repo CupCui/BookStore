@@ -20,6 +20,10 @@
 				return false;
 			}
 		});
+		
+		$("#imgCode").click(function() {
+			this.src = "KaptchaServlet?time=" + new Date();
+		});
 	});
 </script>
 </head>
@@ -54,6 +58,11 @@
 									<br />
 									<label>用户密码：</label>
 									<input class="itxt" type="password" placeholder="请输入密码" autocomplete="off" tabindex="1" name="password" id="password" value="${empty requestScope.user.password?'':requestScope.user.password }" />
+									<br />
+									<br />
+									<label>验证码：</label>
+									<input class="itxt inp" type="text" style="width: 155px;" id="code" name="verifyCode" />
+									<img alt="" src="KaptchaServlet" style="float: right; margin-right: 22px; width: 89px; height:40px;" id="imgCode">									
 									<br />
 									<br />
 									<input type="submit" value="登录" id="sub_btn" />

@@ -39,6 +39,12 @@
 				alert("Price is not avilable.");
 			}
 		});
+		
+		$(".addCart").click(function() {
+			var bookId = this.name;
+			location.href="CartServlet?event=addCart&bookId=" + bookId;
+		});
+		
 	});
 </script>
 
@@ -61,10 +67,11 @@
 					<button id="search">查询</button>
 			</div>
 			<div class="cont">
-				<span>您的购物车中有3件商品</span>
-				<!-- <div> -->
-					您刚刚将<span style="color: red">时间简史</span>加入到了购物车中
-				<!-- </div> -->
+					<span>您的购物车中有${empty sessionScope.cart?0:sessionScope.cart.totalCount }件商品</span>
+					<c:if test="${not empty sessionScope.lastBook }">
+						您刚刚将<span style="color: red">${sessionScope.lastBook.title }</span>加入到了购物车中
+					</c:if>
+				<c:if test="${not empty sessionScope.cartStockMsg }"><span>库存不足</span></c:if>
 			</div>
 			<c:forEach items="${page.list }" var="book">
 				<div class="b_list">
@@ -93,8 +100,9 @@
 							<span class="sp2">${book.stock }</span>
 						</div>
 						<div class="book_add">
-							<button>加入购物车</button>
+							<button class="addCart" name="${book.id }">加入购物车</button>
 						</div>
+						<input type="hidden" name="referer" value="${sessionScope.referer }" id="referer" />
 					</div>
 				</div>
 			</c:forEach>
@@ -125,4 +133,4 @@
 		</span>
 	</div>
 </body>
-</html>s
+</html>
