@@ -45,7 +45,8 @@ BookStore10:
 		2020.02.10
 		1. Cart
 		
-		
+		2020.02.11
+		1. User name duplicate check
 		
 		
 		

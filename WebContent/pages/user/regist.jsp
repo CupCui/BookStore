@@ -32,6 +32,24 @@
 				$("#errorMsg").text("All right.");
 			}
 		});
+		
+		// Check user name duplicate
+		$("#username").change(function() {
+			var username = $("#username").val();
+			$.post(
+				"UserServlet?event=checkUsername",
+				{"username":username},
+				function(result) {
+					if (result == "ok") {
+						$("#errorMsg").text("User name is not available.");
+					} else {
+						$("#errorMsg").text("User name is available.");
+					}
+				},
+				"text"
+			);
+		});
+		
 		$("#sub_btn").click(function() {
 			return flag;
 		});
