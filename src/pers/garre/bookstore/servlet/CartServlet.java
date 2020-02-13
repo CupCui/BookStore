@@ -1,6 +1,7 @@
 package pers.garre.bookstore.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,8 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
 
 import pers.garre.bookstore.bean.Book;
 import pers.garre.bookstore.bean.Cart;
@@ -79,8 +82,18 @@ public class CartServlet extends BaseServlet {
 		String bookId = request.getParameter("bookId");
 		String count = request.getParameter("count");
 		Cart cart = (Cart)request.getSession().getAttribute("cart");
-		cart.updateCartItemCount(Integer.parseInt(bookId), Integer.parseInt(count));
-		response.sendRedirect("pages/cart/cart.jsp");
+		
+		cart.updateCartItemCount(Integer.parseInt(bookId), Integer.parseInt(count));	// Update database cart item count
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("totalCount", cart.getTotalCount() + "");
+		map.put("totalAmount", cart.getTotalAmount() + "");
+		map.put("amount", cart.getMap().get(Integer.parseInt(bookId)).getAmount() + "");
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(map);
+		
+		response.getWriter().write(json);
 	}
 	
 }

@@ -21,4 +21,9 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 		return user;
 	}
 
+	@Override
+	public User findUserByUsername(String username) {
+		return this.getBean("select * from user where username=?", username);
+	}
+
 }

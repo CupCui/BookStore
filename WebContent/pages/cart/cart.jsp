@@ -6,22 +6,40 @@
 <meta charset="UTF-8">
 <title>购物车</title>
 <%@include file="/WEB-INF/admin/base.jsp" %>
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+</style>
 <script type="text/javascript">
 	$(function() {
 		$(".cartItemCount").change(function() {
 			var bookId = Number(this.name);
 			var count = Number(this.value);
 			var stock = Number(this.min);
+			var amountTd=$(this).parent().next().next();
 			
 			if (count > stock || count <= 0) {
-				if (count == 0) {
+				if (count == 0) {	// Cart book count is 0
 					location.href = "CartServlet?event=deleteCartItem&bookId=" + bookId;
 				} else {
 					alert("Stock is not available.");
 					location.href = "pages/cart/cart.jsp";
 				}
-			} else {
-				location.href = "CartServlet?event=updateCartItemCount&bookId=" + bookId + "&count=" + count;
+			} else { // Book stock id available
+				$.get(
+					"CartServlet?event=updateCartItemCount",
+					{"bookId":bookId, "count":count},
+					function(object) {
+						$("#b_count").text(object.totalCount);
+						$("#b_price").text(object.totalAmount);
+						amountTd.text(object.amount);
+					},
+					"json"
+				);
+				
+// 				location.href = "CartServlet?event=updateCartItemCount&bookId=" + bookId + "&count=" + count;
 			}
 		});
 		
@@ -68,6 +86,12 @@
 			<%@include file="/WEB-INF/admin/header.jsp" %>
 	</div>
 	
+	<c:if test="${empty sessionScope.cart }">
+		<div id="main">
+			<h1>你的购物车未空<a href="BookClientServlet?event=findAllBooks">去购物</a></h1>
+		</div>
+	</c:if>
+	
 	<div id="main" class="box_order">
 		<table>
 			<tr>
@@ -94,11 +118,11 @@
 			</c:forEach>
 		</table>
 		<div class="cart_info">
-			<span class="cart_span">购物车中共有<span class="b_count">${sessionScope.cart.totalCount }</span>件商品</span>
-			<span class="cart_span">总金额<span class="b_price">${sessionScope.cart.totalAmount }</span>元</span>
+			<span class="cart_span">购物车中共有<span class="b_count" id="b_count">${sessionScope.cart.totalCount }</span>件商品</span>
+			<span class="cart_span">总金额<span class="b_price" id="b_price">${sessionScope.cart.totalAmount }</span>元</span>
 			<span class="cart_span"><a href="CartServlet?event=clearCart">清空购物车</a></span>
 			<span class="cart_span"><a href="BookClientServlet?event=findAllBooks">继续购物</a></span>
-			<span class="cart_span"><a href="pages/cart/checkout.jsp">去结账</a></span>
+				<span class="cart_span"><a href="OrderServlet?event=checkOut">去结账</a></span>
 		</div>
 	
 	</div>

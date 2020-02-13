@@ -58,4 +58,13 @@ public class UserServlet extends BaseServlet {
 		
 		request.getRequestDispatcher("pages/user/login.jsp").forward(request, response);
 	}
+	
+	protected void checkUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String username = request.getParameter("username");
+		User user = userService.findUserByUsername(username);
+		if (user != null) {
+			response.getWriter().write("ok");
+		}
+	}
+	
 }

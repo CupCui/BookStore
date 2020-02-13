@@ -13,6 +13,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
  */
 public class JDBCUtils {
 	private static DataSource dataSource;
+	private static ThreadLocal<Connection> local = new ThreadLocal<>();
 	
 	static {
 		try {
@@ -29,20 +30,25 @@ public class JDBCUtils {
 
 	//获取连接
 	public static Connection getConnection() {
-		Connection connection = null;
-		try {
-			connection = dataSource.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		Connection connection = local.get();
+		if (connection == null) {
+			try {
+				connection = dataSource.getConnection();
+				local.set(connection);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return connection;
 	}
 
 	//释放连接
-	public static void releaseConnection(Connection connection) {
+	public static void releaseConnection() {
+		Connection connection = local.get();
 		if(connection != null) {
 			try {
 				connection.close();
+				local.remove();	
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

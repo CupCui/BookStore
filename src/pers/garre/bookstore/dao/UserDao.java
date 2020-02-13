@@ -6,4 +6,6 @@ public interface UserDao {
 	public boolean addUser(User user);
 	
 	public User findUserByUandP(String username, String password);
+
+	public User findUserByUsername(String username);
 }

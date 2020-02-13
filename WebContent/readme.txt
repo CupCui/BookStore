@@ -49,7 +49,15 @@ BookStore10:
 		1. User name duplicate check
 		
 		
-		
+BookStore10:		
+		2020.02.12
+		1. Order and order item.
+			1.1
+				OrderServlet?method=checkOut -->
+				OrderServlet	-->
+				OrderService	-->
+				OrderDao
+		2. Update Ajax to cart item change.
 		
 		
 		

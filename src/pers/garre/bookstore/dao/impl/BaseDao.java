@@ -13,7 +13,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import pers.garre.bookstore.util.JDBCUtils;
 
-
 /**
  * 定义一个用来被继承的对数据库进行基本操作的Dao
  * @author xin Chen
@@ -53,8 +52,9 @@ public class BaseDao<T> {
 			count = queryRunner.update(connection, sql, params);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new RuntimeException();
 		} finally {
-			JDBCUtils.releaseConnection(connection);
+//			JDBCUtils.releaseConnection(connection);
 		}
 		return count;
 	}
@@ -75,8 +75,9 @@ public class BaseDao<T> {
 					params);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new RuntimeException();
 		} finally {
-			JDBCUtils.releaseConnection(connection);
+//			JDBCUtils.releaseConnection(connection);
 		}
 		return t;
 	}
@@ -96,8 +97,9 @@ public class BaseDao<T> {
 					type), params);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new RuntimeException();
 		} finally {
-			JDBCUtils.releaseConnection(connection);
+//			JDBCUtils.releaseConnection(connection);
 		}
 		return list;
 	}
@@ -117,8 +119,9 @@ public class BaseDao<T> {
 					params);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new RuntimeException();
 		} finally {
-			JDBCUtils.releaseConnection(connection);
+//			JDBCUtils.releaseConnection(connection);
 		}
 		return t;
 	}
